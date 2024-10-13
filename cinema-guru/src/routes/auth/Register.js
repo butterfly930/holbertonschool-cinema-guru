@@ -14,6 +14,7 @@ function Register({ username, password, setUsername, setPassword, setIsLoggedIn,
             <p>Create new account</p>
             <input
                 type="text"
+                className="underline-input"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
                 placeholder="Username:"
@@ -21,6 +22,7 @@ function Register({ username, password, setUsername, setPassword, setIsLoggedIn,
             />
             <input
                 type="password"
+                className="underline-input"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="Password:"

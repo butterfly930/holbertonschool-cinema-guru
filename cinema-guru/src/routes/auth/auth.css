@@ -1,20 +1,30 @@
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+}
+
 .auth-container {
   margin: 0 auto;
-  background-color: rgb(255, 255, 255);
+  justify-content: center;
+  background-color: #fdfdfd;
   width: 300px;
   text-align: center;
 }
 
 .auth-buttons {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+    gap: 0; 
+    width: 100%; 
 }
 
 .auth-buttons button {
-  width: 45%;
+    flex: 1; 
+    margin: 0; 
 }
-
 input {
   display: block;
   margin: 10px 0;
@@ -25,12 +35,22 @@ input {
 button {
   padding: 10px;
   width: 100%;
-  background-color: #007bff;
+  background-color: #E31C25;
   color: white;
   border: none;
   cursor: pointer;
 }
 
 button:hover {
-  background-color: #0056b3;
+  background-color: #BB000E;
+}
+
+.underline-input {
+    border: none;
+    border-bottom: 2px solid #fd949a;
+    outline: none;
+    padding: 5px 0;
+}
+.underline-input:hover {
+  border-color: #BB000E;
 }

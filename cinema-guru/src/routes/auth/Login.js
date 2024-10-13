@@ -5,7 +5,7 @@ function Login({ username, password, setUsername, setPassword, setIsLoggedIn, se
     const handleSubmit = (event) => {
         event.preventDefault();
 
-        // Simulate login request (replace this with your API call)
+        
         if (username === "testuser" && password === "password") {
             setIsLoggedIn(true);
             setUserUsername(username);
@@ -13,10 +13,11 @@ function Login({ username, password, setUsername, setPassword, setIsLoggedIn, se
     };
 
     return (
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} >
             <p>Sign in with your account</p>
             <input
                 type="text"
+                className="underline-input"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
                 placeholder="Username:"
@@ -24,12 +25,13 @@ function Login({ username, password, setUsername, setPassword, setIsLoggedIn, se
             />
             <input
                 type="password"
+                className="underline-input"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="Password:"
                 required
             />
-            <button type="submit">Sign In</button>
+            <button type="submit" >Sign In</button>
         </form>
     );
 }
