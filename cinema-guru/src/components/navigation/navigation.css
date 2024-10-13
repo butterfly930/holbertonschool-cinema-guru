@@ -1,0 +1,27 @@
+/* src/components/navigation/navigation.css */
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+    background-color: #f8f8f8;
+    border-bottom: 1px solid #ddd;
+}
+
+.header-avatar {
+    border-radius: 50%;
+}
+
+.header-welcome {
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
+.header-logout {
+    cursor: pointer;
+    color: red;
+}
+
+.header-logout i {
+    margin-right: 5px;
+}
