@@ -2,18 +2,19 @@ import React from 'react';
 import './auth.css';
 
 function Login({ username, password, setUsername, setPassword, setIsLoggedIn, setUserUsername }) {
+    
     const handleSubmit = (event) => {
         event.preventDefault();
 
-        
-        if (username === "testuser" && password === "password") {
+
+        if (username === "Test User" && password === "pass") {
             setIsLoggedIn(true);
             setUserUsername(username);
         }
     };
 
     return (
-        <form onSubmit={handleSubmit} >
+        <form onSubmit={handleSubmit} className='form' >
             <p>Sign in with your account</p>
             <input
                 type="text"
