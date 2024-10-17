@@ -1,51 +1,41 @@
 import React, { useState, useEffect } from 'react';
-import './App.css';
-import Dashboard from './routes/dashboard/Dashboard';
+import axios from 'axios';
 import Authentication from './routes/auth/Authentication';
+import Dashboard from './routes/dashboard/Dashboard';
 
-
-const App = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+function App() {
+  // const [page, setPage] = useState(null)
+  const [isLoggedIn, setUserLogIn] = useState(false);
   const [userUsername, setUserUsername] = useState("");
-  
+
   useEffect(() => {
     const accessToken = localStorage.getItem('accessToken');
-
     if (accessToken) {
-      fetch('/api/auth', {
-        method: 'POST',
+      axios.post('http://localhost:8000/api/auth', {}, {
         headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${accessToken}`,
-        },
+          'Authorization': `Bearer ${accessToken}`
+        }
       })
-        .then(response => response.json())
-        .then(data => {
-          if (data.success) {
-            setIsLoggedIn(true);
-            setUserUsername(data.username);
-          } else {
-            setIsLoggedIn(false);
-            setUserUsername('');
-          }
+        .then(response => {
+          setUserLogIn(true);
+          setUserUsername(response.data.username);
+          // setPage(<Dashboard setIsLoggedIn={setUserLogIn} userUsername={userUsername}/>)
         })
         .catch(error => {
-          console.error('Error during authentication:', error);
-          setIsLoggedIn(false);
+          console.log(`Error: ${error}`);
         });
     }
+    // else{
+    //   setPage(<Authentication setIsLoggedIn={setUserLogIn} setUserUsername={setUserUsername}/>)
+    // }
   }, []);
 
   return (
-    <div className="App">
-      {isLoggedIn ? (
-        <Dashboard userUsername={userUsername} setIsLoggedIn={setIsLoggedIn} />
-      ) : (
-        <Authentication setIsLoggedIn={setIsLoggedIn} setUserUsername={setUserUsername} />
-      )}
+    <div>
+      {isLoggedIn ? <Dashboard setIsLoggedIn={setUserLogIn} userUsername={userUsername} /> : <Authentication setIsLoggedIn={setUserLogIn} setUserUsername={setUserUsername} />}
+      {/* {page} */}
     </div>
   );
-};
-
+}
 
 export default App;

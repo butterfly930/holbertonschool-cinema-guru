@@ -2,7 +2,7 @@ import React from 'react';
 import './auth.css';
 
 function Login({ username, password, setUsername, setPassword, setIsLoggedIn, setUserUsername }) {
-    
+
     const handleSubmit = (event) => {
         event.preventDefault();
 

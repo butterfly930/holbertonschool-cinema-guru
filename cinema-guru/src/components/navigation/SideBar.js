@@ -1,88 +1,92 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import './navigation.css';
 import axios from 'axios';
-import '../components.css'; // Ensure this path is correct
-import './navigation.css'; // Your navigation-specific styles
-import Activity from '../Activity'; // Assuming Activity component exists
+import Activity from '../Activity';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faFolder, faStar, faClock } from '@fortawesome/free-solid-svg-icons';
 
-const SideBar = () => {
-    const [selected, setSelected] = useState('home');
+const SideBar = ({ user }) => {
+    const [selected, setSelected] = useState("Home");
+    const [small, setSmall] = useState(true);
     const [activities, setActivities] = useState([]);
     const [showActivities, setShowActivities] = useState(false);
-    const [isOpen, setIsOpen] = useState(false); // State to manage sidebar visibility
+
+    const expandSidebar = () => {
+        setSmall(false);
+    };
+
+    const collapseSidebar = () => {
+        setSmall(true);
+    }
+
+    const homeIcon = <FontAwesomeIcon icon={faFolder} style={{ marginRight: '10px' }} />
+    const favIcon = <FontAwesomeIcon icon={faStar} style={{ marginRight: '10px' }} />
+    const watchIcon = <FontAwesomeIcon icon={faClock} style={{ marginRight: '10px' }} />
 
     const navigate = useNavigate();
 
     const setPage = (pageName) => {
         setSelected(pageName);
-        switch (pageName) {
-            case 'home':
-                navigate('/home');
-                setShowActivities(false); // Hide activities when navigating to home
-                break;
-            case 'favorites':
-                navigate('/favorites');
-                setShowActivities(false); // Hide activities when navigating to favorites
-                break;
-            case 'watchlater':
-                navigate('/watchlater');
-                setShowActivities(false); // Hide activities when navigating to watch later
-                break;
-            case 'activity':
-                setShowActivities(!showActivities); // Toggle activities display
-                break;
-            default:
-                break;
-        }
+
+        if (pageName === "Home") navigate('/home');
+        if (pageName === "Favorites") navigate('/favorites');
+        if (pageName === "Watch Later") navigate('/watchlater');
     };
 
     useEffect(() => {
-        axios.get('/api/activity')
-            .then(response => {
-                setActivities(response.data);
+        const accessToken = localStorage.getItem('accessToken');
+        if (accessToken) {
+            axios.get('http://localhost:8000/api/activity', {
+                headers: {
+                    'Authorization': `Bearer ${accessToken}`
+                }
             })
-            .catch(error => {
-                console.error('Error fetching activities:', error);
-            });
+                .then(response => {
+                    setActivities(response.data);
+                })
+                .catch(error => {
+                    console.log(`Error ${error}`);
+                });
+        }
     }, []);
 
-    const toggleSidebar = () => {
-        setIsOpen(!isOpen);
-    };
+    const dashSmall = {
+        display: small ? 'block' : 'none',
+        height: small ? '100vh' : '',
+    }
+
+    const styleSelected = (location) => {
+        return selected === location ? '#E31C25' : ''
+    }
 
     return (
-        <div>
-            <button className="hamburger" onClick={toggleSidebar}>
-                &#9776; {/* This is the hamburger icon */}
-            </button>
-            {isOpen && (
-                <nav className="sidebar">
-                    <ul className="sidebar-list">
-                        <li onClick={() => setPage('home')} className={selected === 'home' ? 'selected' : ''}>
-                            <span className="icon">🏠</span> Home
+        <nav className={`dashboardMenu ${small ? 'small' : ''}`} onMouseOver={expandSidebar} onMouseOut={collapseSidebar}>
+            <div style={dashSmall}>
+                <ul className='dashboardList dashboardListIcons'>
+                    <li className='active'>{homeIcon}</li>
+                    <li>{favIcon}</li>
+                    <li>{watchIcon}</li>
+                </ul>
+            </div>
+            {!small && (
+                <div>
+                    <ul className='dashboardList'>
+                        <li onClick={() => setPage("Home")} style={{ backgroundColor: styleSelected("Home") }}>
+                            {homeIcon} Home
                         </li>
-                        <li onClick={() => setPage('favorites')} className={selected === 'favorites' ? 'selected' : ''}>
-                            <span className="icon">⭐</span> Favorites
+                        <li onClick={() => setPage("Favorites")} style={{ backgroundColor: styleSelected("Favorites") }}>
+                            {favIcon} Favorites
                         </li>
-                        <li onClick={() => setPage('watchlater')} className={selected === 'watchlater' ? 'selected' : ''}>
-                            <span className="icon">🕒</span> Watch Later
-                        </li>
-                        <li onClick={() => setPage('activity')} className={selected === 'activity' ? 'selected' : ''}>
-                            <span className="icon">📋</span> Activity
+                        <li onClick={() => setPage("Watch Later")} style={{ backgroundColor: styleSelected("Watch Later") }}>
+                            {watchIcon} Watch Later
                         </li>
                     </ul>
-
-                    {showActivities && (
-                        <ul className="activity-list">
-                            {activities.slice(0, 10).map((activity, index) => (
-                                <Activity key={index} activity={activity} />
-                            ))}
-                        </ul>
-                    )}
-                </nav>
+                    <Activity items={activities} user={user} />
+                </div>
             )}
-        </div>
-    );
+        </nav>
+    )
 };
 
 export default SideBar;

@@ -17,9 +17,9 @@ function Authentication({ setIsLoggedIn, setUserUsername }) {
             const response = await axios.post(url, { username, password });
 
             const { accessToken } = response.data;
-            localStorage.setItem('accessToken', accessToken); 
-            setUserUsername(username); 
-            setIsLoggedIn(true); 
+            localStorage.setItem('accessToken', accessToken);
+            setUserUsername(username);
+            setIsLoggedIn(true);
         } catch (error) {
             console.error('Authentication failed:', error.response.data.message);
         }
