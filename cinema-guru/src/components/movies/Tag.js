@@ -6,17 +6,18 @@ const Tag = ({ genre, filter, genres, setGenres }) => {
 
     const handleTag = () => {
         if (selected) {
-            const updatedGenre = genres.filter((g) => g !== genre)
-            setGenres(updatedGenre);
-            setSelected(false);
+            setGenres(genres.filter((g) => g !== genre));
         } else {
             setGenres([...genres, genre]);
-            setSelected(true);
         }
-    }
+        setSelected(!selected);
+    };
+
     return (
-        <li onClick={handleTag} className='tagListElement'>{genre}</li>
-    )
+        <li className={`tag ${selected ? 'selected' : ''}`} onClick={handleTag}>
+            {genre}
+        </li>
+    );
 };
 
 export default Tag;
