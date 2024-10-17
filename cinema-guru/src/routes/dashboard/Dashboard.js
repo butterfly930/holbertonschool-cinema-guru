@@ -12,20 +12,16 @@ const Dashboard = ({ userUsername, setIsLoggedIn }) => {
     return (
         <BrowserRouter>
             <div className="dashboard">
-                <Header userUsername={userUsername} setIsLoggedIn={setIsLoggedIn} />
-                <div className="dashboard-layout">
-                    <SideBar />
-                    <div className="dashboard-content">
-                        {/* Define the Routes */}
-                        <Routes>
-                            <Route path="/home" element={<HomePage />} />
-                            <Route path="/favorites" element={<Favorites />} />
-                            <Route path="/watchlater" element={<WatchLater />} />
-                            {/* Redirect all other routes to /home */}
-                            <Route path="*" element={<Navigate to="/home" />} />
-                        </Routes>
-                    </div>
+                <div>
+                    <Header userUsername={userUsername} setIsLoggedIn={setIsLoggedIn} />
+                    <SideBar user={userUsername} />
                 </div>
+                        <Routes>
+                            <Route path='/' element={<HomePage />} />
+                            <Route path='/favorites' element={<Favorites />} />
+                            <Route path='/watchlater' element={<WatchLater />} />
+                            <Route path='*' element={<Navigate to="/" replace />} />
+                        </Routes>
             </div>
         </BrowserRouter>
     );
